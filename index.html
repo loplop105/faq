@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سوالات متداول - مدرن و زیبا (اصلاح باز شدن باکس)</title>
+    <style>
+        /* --- فونت --- */
+        /* @font-face { ... } */
+
+        body {
+            font-family: 'Vazirmatn', 'IRANSans', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F7F9FC;
+            color: #4A4A4A;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        .faq-page-container {
+            width: 90%;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .faq-header h1 {
+            font-size: 2.6rem;
+            color: #333;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        .faq-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 4px;
+            background-color: #DAA520;
+            border-radius: 2px;
+        }
+        .faq-header p.subtitle {
+            font-size: 1.05rem;
+            color: #777;
+            max-width: 650px;
+            margin: 10px auto 0 auto;
+            line-height: 1.75;
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .faq-item {
+            background-color: #FFFFFF;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(100, 110, 130, 0.08);
+            opacity: 0;
+            transform: translateY(15px);
+            animation: faqItemFadeInUp 0.45s ease-out forwards;
+            border: 1px solid #E8EDF3;
+        }
+
+        @keyframes faqItemFadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 25px;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+            border-bottom: 1px solid transparent; 
+            position: relative;
+        }
+        .faq-question:hover {
+            background-color: rgba(218, 165, 32, 0.03);
+        }
+
+        .faq-item.active .faq-question {
+            background-color: rgba(218, 165, 32, 0.06);
+            border-bottom-color: rgba(218, 165, 32, 0.1); 
+        }
+        .faq-item.active .faq-question h3 {
+            color: #c7951c;
+        }
+
+        .faq-question h3 {
+            font-size: 1.1rem;
+            color: #4A4A4A;
+            margin: 0;
+            font-weight: 500;
+            line-height: 1.6;
+            transition: color 0.25s ease;
+        }
+
+        .faq-icon {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+        .faq-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: #9098A5;
+            stroke-width: 2; /* کاهش ضخامت برای ظرافت بیشتر */
+            transition: stroke 0.25s ease;
+        }
+        .faq-item.active .faq-icon svg {
+            stroke: #DAA520;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            /* فقط max-height انیمیت می‌شود، padding آنی تغییر می‌کند */
+            transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1); 
+            padding-left: 25px;
+            padding-right: 25px;
+            padding-top: 0; 
+            padding-bottom: 0;
+            background-color: #FFFFFF;
+            border-top: 1px solid transparent; 
+        }
+
+        .faq-item.active .faq-answer {
+            padding-top: 15px; 
+            padding-bottom: 30px; /* فاصله بیشتر در انتهای متن */
+            border-top-color: #F0F4F8; 
+        }
+        
+        .faq-answer-content {
+            /* این div برای محتوای داخلی است */
+        }
+
+        .faq-answer-content p {
+            font-size: 0.92rem;
+            color: #555D66;
+            line-height: 1.85;
+            margin: 0 0 15px 0;
+        }
+        .faq-answer-content p:last-child {
+            margin-bottom: 0;
+        }
+        .faq-answer-content a {
+            color: #DAA520;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dashed rgba(218, 165, 32, 0.4);
+            transition: border-bottom-color 0.2s ease;
+        }
+        .faq-answer-content a:hover {
+            border-bottom-color: #DAA520;
+        }
+
+        /* --- واکنش‌گرایی --- */
+        @media (max-width: 768px) {
+            .faq-page-container { padding: 30px 15px; margin-top: 20px; margin-bottom: 20px;}
+            .faq-header { margin-bottom: 40px; }
+            .faq-header h1 { font-size: 2.1rem; }
+            .faq-header p.subtitle { font-size: 1rem; }
+            .faq-question { padding: 18px 20px; }
+            .faq-question h3 { font-size: 1rem; }
+            .faq-answer { padding-left: 20px; padding-right: 20px; }
+            .faq-item.active .faq-answer { padding-top: 10px; padding-bottom: 20px; }
+            .faq-answer-content p { font-size: 0.9rem; line-height: 1.75; }
+        }
+        @media (max-width: 480px) {
+            .faq-header h1 { font-size: 1.8rem; padding-bottom: 8px;}
+            .faq-header h1::after { width: 60px; height: 3px;}
+            .faq-header p.subtitle { font-size: 0.9rem; }
+            .faq-question { padding: 15px; }
+            .faq-question h3 { font-size: 0.95rem; line-height: 1.4; }
+            .faq-icon { margin-right: 10px; width: 18px; height: 18px; }
+            .faq-item.active .faq-answer { padding-top: 10px; padding-bottom: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="faq-page-container">
+        <div class="faq-header">
+            <h1>سوالات متداول </h1>
+            <p class="subtitle">پاسخ به پرسش‌های رایج شما در مورد خدمات و پلتفرم ما. اگر سوال دیگری دارید، با ما تماس بگیرید.</p>
+        </div>
+
+        <div class="faq-list" id="faqList">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>پلتفرم شما دقیقاً چه خدماتی ارائه می‌دهد؟</h3>
+                    <div class="faq-icon">
+                        <svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p>ما یک پلتفرم تخصصی املاک هستیم که به شما کمک می‌کنیم ملک ایده‌آل خود را در [نام منطقه/شهر شما] به راحتی پیدا کنید. وجه تمایز ما در ارائه آگهی‌های باکیفیت و به‌روز، اطلاعات دقیق و کاربردی منطقه‌ای، و خدمات مشاوره‌ای تخصصی است تا شما با آگاهی کامل و اطمینان خاطر تصمیم بگیرید..</p>
+                        <p>هدف ما ارائه شفافیت و کارایی در بازار املاک است.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="faq-item"><div class="faq-question"><h3>چگونه می‌توانم به بهترین شکل ملک مورد نظرم را در وب‌سایت شما جستجو کنم؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>موتور جستجوی ما به شما امکان می‌دهد تا با استفاده از کلیدواژه‌ها (مانند نام محله، نوع ملک)، فیلترهای دقیق (قیمت، متراژ، تعداد اتاق و...) و حتی جستجو بر روی نقشه، به سرعت و با دقت ملک ایده‌آل خود را بیابید.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>چه نوع فیلترهای جستجویی در وب‌سایت شما برای یافتن ملک تخصصی موجود است؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>شما می‌توانید بر اساس نوع ملک (آپارتمان، ویلایی، تجاری، زمین و...)، وضعیت معامله (خرید، فروش، رهن، اجاره)، محدوده قیمت، متراژ دقیق، تعداد اتاق خواب، سن بنا، امکانات خاص (پارکینگ، آسانسور، انباری، استخر و...) و موقعیت جغرافیایی جستجو کنید.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>آیا امکان جستجوی ملک بر اساس نقشه و محله‌های خاص در [نام منطقه/شهر شما] وجود دارد؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>بله، یکی از ویژگی‌های قدرتمند موتور جستجوی ما، قابلیت جستجوی پیشرفته بر روی نقشه است. شما می‌توانید محدوده جغرافیایی دلخواه خود را مشخص کرده و تمامی املاک موجود در آن منطقه را مشاهده و بررسی نمایید.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>اطلاعات آگهی‌ها در [نام وب‌سایت شما] هر چند وقت یکبار به‌روزرسانی می‌شوند؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>ما تلاش مستمری برای ارائه جدیدترین و دقیق‌ترین آگهی‌ها داریم. آگهی‌ها به طور مرتب توسط آژانس‌های همکار و کاربران به‌روزرسانی می‌شوند و تیم ما نیز بر صحت اطلاعات نظارت دارد. با این حال، به دلیل پویایی بازار، توصیه می‌کنیم همیشه آخرین وضعیت ملک را از طریق تماس با آگهی‌دهنده استعلام نمایید.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>چگونه می‌توانم ملک خود را برای فروش یا اجاره در وب‌سایت شما ثبت کنم؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>پس از ایجاد حساب کاربری رایگان، می‌توانید از طریق پنل کاربری خود و با دنبال کردن مراحل ساده، مشخصات کامل ملک، تصاویر باکیفیت و اطلاعات تماس خود را ثبت نمایید. آژانس‌های املاک نیز پنل مدیریتی ویژه‌ای برای ثبت و مدیریت گروهی آگهی‌ها در اختیار دارند.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>آیا برای ثبت آگهی در [نام وب‌سایت شما] هزینه‌ای وجود دارد؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>ثبت تعداد مشخصی آگهی پایه در [نام وب‌سایت شما] رایگان است. برای افزایش بازدید و استفاده از امکانات ویژه مانند نردبان کردن آگهی، برچسب‌های خاص یا نمایش در بخش‌های ویژه، بسته‌های تعرفه‌ای متنوعی در نظر گرفته شده است که می‌توانید از بخش [لینک به تعرفه‌ها یا تماس با ما] مشاهده کنید.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>چه تفاوتی بین پلتفرم تخصصی شما و وب‌سایت‌های عمومی آگهی املاک وجود دارد؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>برخلاف پلتفرم‌های عمومی، [نام وب‌سایت شما] منحصراً بر بازار املاک [حوزه تخصص شما] تمرکز دارد. این تخصص به ما امکان می‌دهد تا اطلاعات عمیق‌تر، تحلیل‌های دقیق‌تر منطقه‌ای و ابزارهای جستجوی بهینه‌سازی شده برای نیازهای خاص کاربران این حوزه ارائه دهیم.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>"اطلاعات منطقه‌ای تخصصی" که ارائه می‌دهید شامل چه مواردی است؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>این اطلاعات می‌تواند شامل تحلیل میانگین قیمت، دسترسی به امکانات شهری، شاخص‌های کیفیت زندگی، آمار جمعیتی مرتبط، پروژه‌های عمرانی و چشم‌انداز توسعه منطقه باشد.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>آیا برای استفاده از تمام امکانات سایت نیاز به حساب کاربری دارم؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>خیر، جستجو و مشاهده آگهی‌ها آزاد است. اما برای ثبت آگهی، ذخیره علاقه‌مندی‌ها و دریافت هشدارها، ایجاد حساب کاربری رایگان لازم است.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>چگونه با فروشنده یا آژانس تماس بگیرم؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>اطلاعات تماس آگهی‌دهنده در صفحه هر آگهی موجود است. می‌توانید مستقیماً تماس بگیرید یا از فرم تماس داخلی سایت استفاده کنید.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>نکات بهینه برای جستجوی سریع ملک چیست؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>از کلیدواژه‌های دقیق و فیلترهای موجود استفاده کنید. جستجو بر روی نقشه را امتحان کنید و جستجوهای خود را برای دریافت هشدار ذخیره نمایید.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>آیا خدمات مشاوره‌ای تخصصی املاک نیز ارائه می‌دهید؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>بله، تیم مشاوران ما در زمینه‌های ارزیابی ملک، سرمایه‌گذاری و نکات حقوقی معاملات آماده راهنمایی شما هستند.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>امنیت اطلاعات شخصی من چگونه تضمین می‌شود؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>ما از پروتکل‌های امنیتی به‌روز برای حفاظت از اطلاعات شما استفاده می‌کنیم. جزئیات بیشتر در بخش "سیاست حفظ حریم خصوصی" ما موجود است.</p></div></div></div>
+            <div class="faq-item"><div class="faq-question"><h3>در صورت مشاهده آگهی مشکوک چگونه اطلاع دهم؟</h3><div class="faq-icon"><svg fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg></div></div><div class="faq-answer"><div class="faq-answer-content"><p>می‌توانید از دکمه "گزارش تخلف" کنار هر آگهی استفاده کنید یا با تیم پشتیبانی ما از طریق صفحه "تماس با ما" ارتباط برقرار نمایید.</p></div></div></div>
+            </div> 
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            const closeOthers = false; 
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answerWrapper = item.querySelector('.faq-answer'); 
+                // const answerContent = item.querySelector('.faq-answer-content'); // اگر از این استفاده می‌کنید، مطمئن شوید در HTML هم برای همه آیتم‌ها وجود دارد
+
+                if (question && answerWrapper) { // فقط چک کردن answerWrapper کافی است اگر scrollHeight آن را می‌خوانیم
+                    question.addEventListener('click', () => {
+                        const isActive = item.classList.contains('active');
+
+                        if (closeOthers && !isActive) {
+                            faqItems.forEach(otherItem => {
+                                if (otherItem !== item && otherItem.classList.contains('active')) {
+                                    otherItem.classList.remove('active');
+                                    const otherAnswerWrapper = otherItem.querySelector('.faq-answer');
+                                    otherAnswerWrapper.style.maxHeight = null;
+                                }
+                            });
+                        }
+                        
+                        item.classList.toggle('active');
+
+                        if (item.classList.contains('active')) {
+                            // console.log('Opening. scrollHeight of answerWrapper:', answerWrapper.scrollHeight);
+                            answerWrapper.style.maxHeight = answerWrapper.scrollHeight + "px";
+                        } else {
+                            // console.log('Closing');
+                            answerWrapper.style.maxHeight = null;
+                        }
+                    });
+                } else {
+                    // console.warn('FAQ item is missing .faq-question or .faq-answer element:', item);
+                }
+            });
+
+            const faqList = document.getElementById('faqList');
+            if (faqList) {
+                const items = faqList.querySelectorAll('.faq-item');
+                items.forEach((item, index) => {
+                    item.style.animationDelay = `${index * 0.05 + 0.1}s`;
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
